@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Debug Program",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/dist/index.js",
+      "sourceMaps": true,
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon"
+    }
+  ]
+}
