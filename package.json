@@ -60,7 +60,7 @@
     "knex": "^0.20.12",
     "lodash": "^4.17.13",
     "morgan": "^1.10.0",
-    "pg": "^7.18.2",
+    "mysql": "^2.18.1",
     "serve-favicon": "^2.5.0",
     "swagger-jsdoc": "^3.5.0",
     "swagger-ui-dist": "^3.25.0",
