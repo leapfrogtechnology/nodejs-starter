@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import authenticateUser from './auth';
+
 import swaggerSpec from './utils/swagger';
 import userRoutes from './routes/userRoutes';
 
@@ -16,12 +18,17 @@ router.get('/swagger.json', (req, res) => {
 });
 
 /**
+ * LMS Authentication middleware
+ */
+router.use(authenticateUser);
+
+/**
  * GET /api
  */
 router.get('/', (req, res) => {
   res.json({
     app: req.app.locals.title,
-    apiVersion: req.app.locals.version
+    apiVersion: req.app.locals.version,
   });
 });
 
