@@ -1,6 +1,7 @@
 import HttpStatus from 'http-status-codes';
 
 import * as userService from '../services/userService';
+import logger from '../utils/logger';
 
 /**
  * Get all users.
@@ -12,22 +13,8 @@ import * as userService from '../services/userService';
 export function fetchAll(req, res, next) {
   userService
     .getAllUsers()
-    .then(data => res.json({ data }))
-    .catch(err => next(err));
-}
-
-/**
- * Get a user by its id.
- *
- * @param {Object} req
- * @param {Object} res
- * @param {Function} next
- */
-export function fetchById(req, res, next) {
-  userService
-    .getUser(req.params.id)
-    .then(data => res.json({ data }))
-    .catch(err => next(err));
+    .then((data) => res.json({ data }))
+    .catch((err) => next(err));
 }
 
 /**
@@ -38,36 +25,11 @@ export function fetchById(req, res, next) {
  * @param {Function} next
  */
 export function create(req, res, next) {
-  userService
-    .createUser(req.body)
-    .then(data => res.status(HttpStatus.CREATED).json({ data }))
-    .catch(err => next(err));
-}
-
-/**
- * Update a user.
- *
- * @param {Object} req
- * @param {Object} res
- * @param {Function} next
- */
-export function update(req, res, next) {
-  userService
-    .updateUser(req.params.id, req.body)
-    .then(data => res.json({ data }))
-    .catch(err => next(err));
-}
-
-/**
- * Delete a user.
- *
- * @param {Object} req
- * @param {Object} res
- * @param {Function} next
- */
-export function deleteUser(req, res, next) {
-  userService
-    .deleteUser(req.params.id)
-    .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
-    .catch(err => next(err));
+  try {
+    const data = userService.createUser(req.body);
+    res.status(HttpStatus.CREATED).json({data})
+  } catch(err) {
+    logger.error(err);
+    next(err)
+  }
 }

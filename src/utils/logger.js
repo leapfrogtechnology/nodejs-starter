@@ -19,7 +19,7 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console({
       format: format.combine(format.colorize(), format.simple()),
-      level: 'info'
+      level: 'info',
     }),
     new winston.transports.DailyRotateFile({
       format: format.combine(format.timestamp(), format.json()),
@@ -27,9 +27,9 @@ const logger = winston.createLogger({
       level: LOG_LEVEL,
       dirname: LOG_DIR,
       datePattern: 'YYYY-MM-DD',
-      filename: '%DATE%-debug.log'
-    })
-  ]
+      filename: '%DATE%-debug.log',
+    }),
+  ],
 });
 
 export const logStream = {
@@ -40,7 +40,7 @@ export const logStream = {
    */
   write(message) {
     logger.info(message.toString());
-  }
+  },
 };
 
 export default logger;

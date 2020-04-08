@@ -1,24 +1,15 @@
-import bookshelf from '../db';
+import Model from './model';
 
-const TABLE_NAME = 'users';
 
 /**
- * User model.
+ * User model for basic CRUD.
  */
-class User extends bookshelf.Model {
-  /**
-   * Get table name.
-   */
-  get tableName() {
-    return TABLE_NAME;
-  }
-
-  /**
-   * Table has timestamps.
-   */
-  get hasTimestamps() {
-    return true;
-  }
+class User extends Model {
+    constructor() {
+        super(User.Table);
+    }
 }
+
+User.Table = "users";
 
 export default User;

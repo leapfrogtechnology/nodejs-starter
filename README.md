@@ -100,4 +100,3 @@ To run the tests you need to create a separate test database. Don't forget to up
 Run tests with coverage.
 
     $ yarn test:coverage
-

@@ -1,5 +1,7 @@
 import BaseError from './error';
 
+const TITLE = 'Invalid access token';
+
 /**
  * Error class for Token Error.
  */
@@ -8,14 +10,19 @@ class TokenError extends BaseError {
    * Constructor of NetworkError.
    *
    * @param {Object} error
+   * @param {String} error.title
    * @param {String} error.message
-   * @param {String} error.details
    * @param {Number} error.code
    */
-  constructor({ message = '', detail = '', code = 401 }) {
+  constructor({ title = TITLE, message = '', code = 401 }) {
     super(message);
-    this.detail = detail;
+    this.title = title;
+    this.message = message;
     this.code = code;
+  }
+
+  toString() {
+    return `${this.title} [${this.code}]`;
   }
 }
 

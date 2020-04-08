@@ -8,7 +8,7 @@ let connection = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   charset: 'utf8',
-  timezone: 'UTC'
+  timezone: 'UTC',
 };
 
 // For test environment
@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'test') {
     host: process.env.TEST_DB_HOST,
     user: process.env.TEST_DB_USER,
     password: process.env.TEST_DB_PASSWORD,
-    database: process.env.TEST_DB_NAME
+    database: process.env.TEST_DB_NAME,
   };
 }
 
@@ -32,10 +32,10 @@ module.exports = {
   migrations: {
     tableName: 'migrations',
     directory: './migrations',
-    stub: './stubs/migration.stub'
+    stub: './stubs/migration.stub',
   },
   seeds: {
     directory: './seeds',
-    stub: './stubs/seed.stub'
-  }
+    stub: './stubs/seed.stub',
+  },
 };

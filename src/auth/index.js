@@ -6,7 +6,8 @@ import NetworkError from '../errors/network';
 import { http } from '../utils/http';
 import logger from '../utils/logger';
 
-const EMPTY_TOKEN = 'Access token not provided.';
+import { userSession } from './session';
+
 const INTERNAL_ERROR = 'Internal Error';
 
 /**
@@ -24,10 +25,8 @@ const getTokenFromHeaders = (req) => {
       return authorization.split(' ')[1];
     }
   }
-  logger.error(`Token Error: ${EMPTY_TOKEN}`);
 
   throw new TokenError({
-    message: EMPTY_TOKEN,
     code: HttpStatus.UNAUTHORIZED,
   });
 };
@@ -58,16 +57,21 @@ export function fetchUserByToken(token) {
  */
 async function authenticateUser(req, res, next) {
   try {
-    const token = getTokenFromHeaders(req);
-    const user = await fetchUserByToken(token);
-
-    req.token = token;
-    req.currentUser = user.data;
-    next();
+      userSession.run(() => {
+      const token = "random token"
+      const user =  {
+        "name" :"random user"
+      }
+      userSession.set('user', {
+        ...user,
+      });
+      next();
+        
+      })
+    
   } catch (error) {
+    logger.error(error);
     if (error instanceof NetworkError) {
-      logger.error(`Network Error: ${error}`);
-
       return next(
         new NetworkError({
           message: INTERNAL_ERROR,
@@ -75,17 +79,7 @@ async function authenticateUser(req, res, next) {
         })
       );
     }
-
-    if (error instanceof TokenError) {
-      return next(error);
-    }
-
-    return next(
-      new TokenError({
-        code: 401,
-        message: 'Not Authorized',
-      })
-    );
+    next(error);
   }
 }
 
