@@ -56,30 +56,30 @@ export function fetchUserByToken(token) {
  * @param {Object} next
  */
 function authenticateUser(req, res, next) {
-  try {
-    userSession.run(async () => {
+  userSession.run(async () => {
+    try {
       const token = getTokenFromHeaders(req);
+
       const user = await fetchUserByToken(token);
 
       userSession.set('user', {
         ...user,
         token,
       });
-
       next();
-    });
-  } catch (err) {
-    logger.error(err);
-    if (err instanceof NetworkError) {
-      return next(
-        new NetworkError({
-          message: INTERNAL_ERROR,
-          code: HttpStatus.INTERNAL_SERVER_ERROR,
-        })
-      );
+    } catch (err) {
+      logger.error(err);
+      if (err instanceof NetworkError) {
+        return next(
+          new NetworkError({
+            message: INTERNAL_ERROR,
+            code: HttpStatus.INTERNAL_SERVER_ERROR,
+          })
+        );
+      }
+      next(err);
     }
-    next(err);
-  }
+  });
 }
 
 export default authenticateUser;

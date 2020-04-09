@@ -16,17 +16,17 @@ export async function fetchAll() {
 
 /**
  * Create a new user.
- * 
+ *
  * @returns {Promise}
  */
 export async function create() {
   const user = userSession();
 
-    const id = await new User().save(user);
+  const id = await new User().save(user);
 
-    logger.info(`User created: ${user}`);
-    
-    return {
-      id: id.pop(),
-    };
+  logger.info(`User created: ${user}`);
+
+  return {
+    id: id.pop(),
+  };
 }

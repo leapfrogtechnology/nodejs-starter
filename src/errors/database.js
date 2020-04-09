@@ -7,7 +7,6 @@ import BaseError from './error';
  * Error class for database failure and error.
  */
 class DatabaseError extends BaseError {
-  
   /**
    * Constructor of DatabaseError.
    *
@@ -20,18 +19,18 @@ class DatabaseError extends BaseError {
     super(message);
     this.title = title;
     this.message = message;
-    this.code = code;
+    this.statusCode = code;
   }
 
   /**
    * Returns the formatted string representation of error.
-   * 
+   *
    * @method DatabaseError#toString
-   * 
+   *
    * @returns {String}
    */
   toString() {
-    return `${this.title}[${this.code}]`;
+    return `${this.title}[${this.statusCode}]`;
   }
 }
 

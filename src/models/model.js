@@ -12,7 +12,7 @@ class Model {
 
   /**
    * This method is required by the domain class.
-   * 
+   *
    * @returns {String}
    */
   getTable() {
@@ -21,9 +21,9 @@ class Model {
 
   /**
    * This method persists the payload object to underlying database.
-   * 
-   * @param {Object} payload 
-   * 
+   *
+   * @param {Object} payload
+   *
    * @returns {Promise}
    */
   save(payload = {}) {

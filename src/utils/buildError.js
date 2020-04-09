@@ -31,6 +31,14 @@ function buildError(err) {
     };
   }
 
+  // Custom errors
+  if (err.isCustom) {
+    return {
+      code: err.statusCode,
+      message: err.message 
+    };
+  }
+
   // Return INTERNAL_SERVER_ERROR for all other cases
   return {
     code: HttpStatus.INTERNAL_SERVER_ERROR,
