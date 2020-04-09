@@ -20,7 +20,7 @@ router.get('/swagger.json', (req, res) => {
 /**
  * LMS Authentication middleware
  */
-router.use(authenticateUser);
+// router.use(authenticateUser);
 
 /**
  * GET /api

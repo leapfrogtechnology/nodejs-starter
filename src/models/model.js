@@ -47,6 +47,11 @@ class Model {
         });
     });
   }
+  
+  fetchAll() {
+    return this._db.select('*');
+  }
+
 }
 
 export default Model;

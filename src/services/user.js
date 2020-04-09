@@ -9,7 +9,7 @@ import logger from '../utils/logger';
  * @returns {Promise}
  */
 export async function fetchAll() {
-  const users = await new User().fetchAll();
+  const users = await User.fetchAll();
 
   return users;
 }
@@ -22,7 +22,7 @@ export async function fetchAll() {
 export async function create() {
   const user = userSession();
 
-  const id = await new User().save(user);
+  const id = await User.save(user);
 
   logger.info(`User created: ${user}`);
 
