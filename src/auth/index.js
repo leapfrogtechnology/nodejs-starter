@@ -55,23 +55,22 @@ export function fetchUserByToken(token) {
  * @param {Object} res
  * @param {Object} next
  */
-async function authenticateUser(req, res, next) {
+function authenticateUser(req, res, next) {
   try {
-      userSession.run(() => {
-      const token = "random token"
-      const user =  {
-        "name" :"random user"
-      }
+    userSession.run(async () => {
+      const token = getTokenFromHeaders(req);
+      const user = await fetchUserByToken(token);
+
       userSession.set('user', {
         ...user,
+        token,
       });
+
       next();
-        
-      })
-    
-  } catch (error) {
-    logger.error(error);
-    if (error instanceof NetworkError) {
+    });
+  } catch (err) {
+    logger.error(err);
+    if (err instanceof NetworkError) {
       return next(
         new NetworkError({
           message: INTERNAL_ERROR,
@@ -79,7 +78,7 @@ async function authenticateUser(req, res, next) {
         })
       );
     }
-    next(error);
+    next(err);
   }
 }
 

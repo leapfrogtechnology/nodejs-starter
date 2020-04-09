@@ -1,7 +1,8 @@
 import HttpStatus from 'http-status-codes';
 
-import * as userService from '../services/userService';
 import logger from '../utils/logger';
+
+import * as userService from '../services/user';
 
 /**
  * Get all users.
@@ -12,9 +13,9 @@ import logger from '../utils/logger';
  */
 export function fetchAll(req, res, next) {
   userService
-    .getAllUsers()
+    .fetchAll()
     .then((data) => res.json({ data }))
-    .catch((err) => next(err));
+    .catch(next);
 }
 
 /**
@@ -26,10 +27,11 @@ export function fetchAll(req, res, next) {
  */
 export function create(req, res, next) {
   try {
-    const data = userService.createUser(req.body);
-    res.status(HttpStatus.CREATED).json({data})
-  } catch(err) {
+    const data = userService.create(req.body);
+
+    res.status(HttpStatus.CREATED).json({ data });
+  } catch (err) {
     logger.error(err);
-    next(err)
+    next(err);
   }
 }

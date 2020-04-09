@@ -7,12 +7,14 @@ const TITLE = 'Network error';
  */
 class NetworkError extends BaseError {
   /**
-   * Constructor of NetworkError.
+   * Constructor for NetworkError.
    *
    * @param {Object} error
    * @param {String} error.title
    * @param {String} error.message
    * @param {Number} error.code
+   * 
+   * @returns {NetworkError}
    */
   constructor({ title = TITLE, message = '', code = 500 }) {
     super(message);
@@ -20,7 +22,14 @@ class NetworkError extends BaseError {
     this.message = message;
     this.code = code;
   }
-
+  
+  /**
+   * Returns the formatted string representation of error.
+   * 
+   * @method NetworkError#toString
+   * 
+   * @returns {String}
+   */
   toString() {
     return `${this.title}[${this.code}]`;
   }

@@ -1,17 +1,35 @@
 import db from '../db';
 
 /**
+ * @class Model
+ *
  * Base class that is extended by domain models such as users, leave, etc.
  */
 class Model {
-  constructor(dbname) {
-    this._db = db(dbname);
+  constructor() {
+    this._db = db(this.getTable());
   }
-  
+
+  /**
+   * This method is required by the domain class.
+   * 
+   * @returns {String}
+   */
+  getTable() {
+    throw new Error('Not implemented');
+  }
+
+  /**
+   * This method persists the payload object to underlying database.
+   * 
+   * @param {Object} payload 
+   * 
+   * @returns {Promise}
+   */
   save(payload = {}) {
     return new Promise((resolve, reject) => {
       db.transaction((trx) => {
-       this._db 
+        this._db
           .transacting(trx)
           .insert(payload)
           .then((response) => {
@@ -28,18 +46,6 @@ class Model {
           reject(err);
         });
     });
-  }
-  
-  fetchAll() {
-    return this._db.select('*');
-  }
-
-  fetchBy(where) {
-    return this._db.where(where).first();
-  }
-
-  fetchAllBy(where) {
-    return this._db.where(where);
   }
 }
 

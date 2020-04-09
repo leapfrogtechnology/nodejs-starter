@@ -1,15 +1,14 @@
 import Model from './model';
 
-
 /**
- * User model for basic CRUD.
+ * @class User
+ *
+ * User model for basic representing user entity.
  */
 class User extends Model {
-    constructor() {
-        super(User.Table);
-    }
+  getTable() {
+    return 'users';
+  }
 }
-
-User.Table = "users";
 
 export default User;

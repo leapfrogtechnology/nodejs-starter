@@ -1,5 +1,5 @@
 import User from '../models/user';
-import userSession from '../auth/session'
+import userSession from '../auth/session';
 
 import logger from '../utils/logger';
 
@@ -8,20 +8,25 @@ import logger from '../utils/logger';
  *
  * @returns {Promise}
  */
-export async function getAllUsers() {
+export async function fetchAll() {
   const users = await new User().fetchAll();
-  return users;   
+
+  return users;
 }
 
-export async function createUser() {
+/**
+ * Create a new user.
+ * 
+ * @returns {Promise}
+ */
+export async function create() {
   const user = userSession();
-  try {
+
     const id = await new User().save(user);
-    logger.info(`User created: ${user}`)
+
+    logger.info(`User created: ${user}`);
+    
     return {
       id: id.pop(),
     };
-  } catch (err) {
-    throw err;
-  }
 }
