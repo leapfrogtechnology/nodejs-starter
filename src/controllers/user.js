@@ -11,11 +11,14 @@ import * as userService from '../services/user';
  * @param {Object} res
  * @param {Function} next
  */
-export function fetchAll(req, res, next) {
-  userService
-    .fetchAll()
-    .then((data) => res.json({ data }))
-    .catch(next);
+export async function fetchAll(req, res, next) {
+  try {
+    const data = await userService.fetchAll();
+    res.json({ data });
+  } catch (err) {
+    logger.error(err);
+    next(err);
+  }
 }
 
 /**
@@ -25,9 +28,9 @@ export function fetchAll(req, res, next) {
  * @param {Object} res
  * @param {Function} next
  */
-export function create(req, res, next) {
+export async function create(req, res, next) {
   try {
-    const data = userService.create(req.body);
+    const data = await userService.create(req.body);
 
     res.status(HttpStatus.CREATED).json({ data });
   } catch (err) {
