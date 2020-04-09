@@ -1,7 +1,7 @@
 {
-  "name": "express-api-es6-starter",
+  "name": "NodeJS starter",
   "version": "1.0.0",
-  "description": "Express API ES6 Starter",
+  "description": "NodeJS Starter",
   "scripts": {
     "start": "node dist",
     "prestart": "yarn build",
@@ -42,7 +42,6 @@
     "api"
   ],
   "private": true,
-  "author": "Saugat Acharya <mesaugat@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@hapi/boom": "^9.1.0",
@@ -50,9 +49,6 @@
     "@sentry/node": "^5.15.0",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
-    "bookshelf": "^1.1.0",
-    "bookshelf-virtuals-plugin": "^0.1.1",
-    "boom": "^7.3.0",
     "compression": "^1.7.4",
     "continuation-local-storage": "^3.2.1",
     "cors": "^2.8.5",
