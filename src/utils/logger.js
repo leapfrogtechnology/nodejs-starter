@@ -1,6 +1,7 @@
 import fs from 'fs';
-import winston, { format } from 'winston';
+import path from 'path';
 
+import winston, { format } from 'winston';
 import 'winston-daily-rotate-file';
 
 // Use LOG_DIR from env
@@ -12,14 +13,26 @@ if (!fs.existsSync(LOG_DIR)) {
   fs.mkdirSync(LOG_DIR);
 }
 
+// logFormat used for console logging
+const logFormat = format.printf(info => `${info.timestamp} ${info.level} [${info.label}]: ${info.message}`);
+
 /**
  * Create a new winston logger.
  */
 const logger = winston.createLogger({
+  format: format.combine(
+    format.label({ label: path.basename(process.mainModule.filename) }),
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    // Format the metadata object
+    format.metadata({ fillExcept: ['message', 'level', 'timestamp', 'label'] })
+  ),
   transports: [
     new winston.transports.Console({
-      format: format.combine(format.colorize(), format.simple()),
-      level: 'info',
+      format: format.combine(
+        format.colorize(),
+        logFormat,
+      ),
+      level: "info",
     }),
     new winston.transports.DailyRotateFile({
       format: format.combine(format.timestamp(), format.json()),
