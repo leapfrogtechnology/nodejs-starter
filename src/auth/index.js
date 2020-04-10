@@ -6,28 +6,30 @@ import TokenError from '../errors/token';
 /**
  * Get token from header in http request.
  *
- * @param {Object} req
+ * @param   {Object} req
+ *
+ * @returns {Object}
  */
 function getTokenFromHeaders(req) {
   const {
     headers: { authorization = '' },
   } = req;
 
-  const fields = authorization.split(' ').filter(Boolean);
+  const [tokenType, token] = authorization.split(' ').filter(Boolean);
 
-  if (fields.length <= 1 || fields[0] !== 'Bearer') {
+  if (tokenType !== 'Bearer' || !token) {
     return {
       ok: false,
     };
   }
 
   return {
-    token: fields[1],
+    token,
   };
 }
 
 /**
- * Fetch user from auth server from token.
+ * Fetch user from auth server using token.
  *
  * @param {String} token
  * @throws NetworkError

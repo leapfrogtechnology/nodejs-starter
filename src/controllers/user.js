@@ -1,7 +1,5 @@
 import HttpStatus from 'http-status-codes';
 
-import logger from '../utils/logger';
-
 import * as userService from '../services/user';
 
 /**
@@ -11,13 +9,12 @@ import * as userService from '../services/user';
  * @param {Object} res
  * @param {Function} next
  */
-export async function fetchAll(req, res, next) {
+export async function fetch(req, res, next) {
   try {
-    const data = await userService.fetchAll();
+    const data = await userService.fetch();
 
     res.json({ data });
   } catch (err) {
-    logger.error(err);
     next(err);
   }
 }
@@ -31,11 +28,10 @@ export async function fetchAll(req, res, next) {
  */
 export async function create(req, res, next) {
   try {
-    const data = await userService.create(req.body);
+    const data = await userService.create();
 
     res.status(HttpStatus.CREATED).json({ data });
   } catch (err) {
-    logger.error(err);
     next(err);
   }
 }

@@ -1,15 +1,11 @@
 import db from '../db';
 
+import { clamp } from '../utils/math';
+
 /**
- * @class Model
- *
  * Base class that is extended by domain models such as users, leave, etc.
  */
 class Model {
-  constructor() {
-    this._db = db(this.getTable());
-  }
-
   /**
    * This method is required by the domain class.
    *
@@ -21,31 +17,32 @@ class Model {
 
   /**
    * This method persists the payload object to underlying database.
+   * NOTE: Rollback triggers with rejected promise.
    *
-   * @param {Object} payload
+   * @param   {Object} payload
    *
    * @returns {Promise}
    */
   save(payload = {}) {
-    return new Promise((resolve, reject) => {
-      db.transaction((trx) => {
-        this._db
-          .transacting(trx)
-          .insert(payload)
-          .then((response) => {
-            trx.commit(response);
-          })
-          .catch((err) => {
-            trx.rollback(err);
-          });
-      })
-        .then((response) => {
-          resolve(response);
-        })
-        .catch((err) => {
-          reject(err);
-        });
+    return db.transaction((trx) => {
+      return db(this.getTable()).transacting(trx).insert(payload);
     });
+  }
+
+  /**
+   * This method fetches rows from database provided offset and limit.
+   *
+   * @param   {Object} param0
+   *
+   * @returns {Promise}
+   */
+  fetch({ offset, limit }) {
+    // Clamp the limit of the pagination to 100 exclusive
+    limit = clamp(limit, 0, 100);
+    // Only positive offset allowed
+    offset = Math.max(0, offset);
+
+    return db(this.getTable()).limit(limit).offset(offset);
   }
 }
 

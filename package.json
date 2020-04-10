@@ -1,5 +1,5 @@
 {
-  "name": "starter",
+  "name": "@leapfrogtechnology/nodejs-starter",
   "version": "1.0.0",
   "description": "NodeJS Starter",
   "scripts": {

@@ -7,7 +7,7 @@ const router = Router();
 /**
  * GET /api/users
  */
-router.get('/', userController.fetchAll);
+router.get('/', userController.fetch);
 
 /**
  * POST /api/users

@@ -8,10 +8,9 @@ import logger from '../utils/logger';
  *
  * @returns {Promise}
  */
-export async function fetchAll() {
-  const users = await User.fetchAll();
-
-  return users;
+export function fetch() {
+  // Example: should retrieve from the query parameter
+  return User.fetch({ limit: 3, offset: 4 });
 }
 
 /**
@@ -23,11 +22,11 @@ export async function create() {
   // Example for retrieving the user from async-store in service.
   const user = store.get('user');
 
-  const id = await User.save(user);
+  const [id] = await User.save(user);
 
   logger.info(`User created: ${user}`);
 
   return {
-    id: id.pop(),
+    id,
   };
 }

@@ -10,7 +10,7 @@ export function seed(knex) {
     .then(() => {
       return knex('users').insert([
         {
-          name: 'Sample user',
+          name: 'John Doe',
           updated_at: new Date(),
         },
       ]);

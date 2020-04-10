@@ -1,11 +1,14 @@
 import Model from './model';
 
 /**
- * @class User
- *
- * User model for basic representing user entity.
+ * User model representing user entity.
  */
 class User extends Model {
+  /**
+   * Returns table name associated with User model.
+   *
+   * @returns {String}
+   */
   getTable() {
     return 'users';
   }
