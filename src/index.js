@@ -11,6 +11,7 @@ import favicon from 'serve-favicon';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import * as Sentry from '@sentry/node';
+import * as store from '@leapfrogtechnology/async-store';
 
 import routes from './routes';
 import json from './middlewares/json';
@@ -37,6 +38,9 @@ app.locals.version = process.env.APP_VERSION;
 
 // This request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
+
+// For context propagation of request-response http roundtrip
+app.use(store.initializeMiddleware());
 
 app.use(favicon(path.join(__dirname, '/../public', 'favicon.ico')));
 app.use(cors());

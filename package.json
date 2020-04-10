@@ -46,11 +46,11 @@
   "dependencies": {
     "@hapi/boom": "^9.1.0",
     "@hapi/joi": "^17.1.1",
+    "@leapfrogtechnology/async-store": "^1.2.0",
     "@sentry/node": "^5.15.0",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
-    "continuation-local-storage": "^3.2.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

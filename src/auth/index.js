@@ -1,11 +1,7 @@
-import TokenError from '../errors/token';
+import * as store from '@leapfrogtechnology/async-store';
 
-import logger from '../utils/logger';
 import { http } from '../utils/http';
-
-import { userSession } from './session';
-
-const log = logger.withNamespace('AUTH');
+import TokenError from '../errors/token';
 
 /**
  * Get token from header in http request.
@@ -56,26 +52,21 @@ async function fetchUserByToken(token) {
  * @param {Object} res
  * @param {Object} next
  */
-function authenticateUser(req, res, next) {
-  userSession.run(async () => {
-    try {
-      const { ok, token } = getTokenFromHeaders(req);
+async function authenticateUser(req, res, next) {
+  try {
+    const { ok, token } = getTokenFromHeaders(req);
 
-      if (!ok) {
-        throw new TokenError('Invalid token');
-      }
-      const user = await fetchUserByToken(token);
-
-      userSession.set('user', {
-        ...user,
-        token,
-      });
-      next();
-    } catch (err) {
-      log.error(err);
-      next(err);
+    if (!ok) {
+      throw new TokenError('Invalid token');
     }
-  });
+
+    const user = await fetchUserByToken(token);
+
+    store.set(user);
+    next();
+  } catch (err) {
+    next(err);
+  }
 }
 
 export default authenticateUser;

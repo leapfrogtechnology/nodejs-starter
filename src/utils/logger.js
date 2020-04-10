@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 
 import winston, { format } from 'winston';
+import * as store from '@leapfrogtechnology/async-store';
+
 import 'winston-daily-rotate-file';
 
 // Use LOG_DIR from env
@@ -17,13 +19,18 @@ if (!fs.existsSync(LOG_DIR)) {
 
 // logFormat used for console logging
 const logFormat = format.printf((info) => {
-  let namespace = '';
+  let formattedNamespace = '';
 
   if (info.metadata.namespace) {
-    namespace = `[${info.metadata.namespace}]`;
+    formattedNamespace = `[${info.metadata.namespace}]`;
   }
 
-  return `${info.timestamp} [${info.level}] [${info.label}] ${namespace}: ${info.message}`;
+  // TODO: Will there be a situation when requestID would be empty string?
+  // May logs before middleware initialization?
+  const requestID = store.getShortId();
+  const formattedReqID = requestID ? `[${requestID}] ` : '';
+
+  return `${info.timestamp} [${info.level}] [${info.label}] ${formattedReqID}${formattedNamespace}: ${info.message}`;
 });
 
 /**

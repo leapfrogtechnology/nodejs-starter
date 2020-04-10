@@ -1,6 +1,6 @@
-import User from '../models/user';
-import userSession from '../auth/session';
+import * as store from '@leapfrogtechnology/async-store';
 
+import User from '../models/user';
 import logger from '../utils/logger';
 
 /**
@@ -20,7 +20,8 @@ export async function fetchAll() {
  * @returns {Promise}
  */
 export async function create() {
-  const user = userSession();
+  // Example for retrieving the user from async-store in service.
+  const user = store.get('user');
 
   const id = await User.save(user);
 
