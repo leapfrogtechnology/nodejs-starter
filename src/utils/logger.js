@@ -16,7 +16,15 @@ if (!fs.existsSync(LOG_DIR)) {
 }
 
 // logFormat used for console logging
-const logFormat = format.printf((info) => `${info.timestamp} ${info.level} [${info.label}]: ${info.message}`);
+const logFormat = format.printf((info) => {
+  let namespace = '';
+
+  if (info.metadata.namespace) {
+    namespace = `[${info.metadata.namespace}]`;
+  }
+
+  return `${info.timestamp} [${info.level}] [${info.label}] ${namespace}: ${info.message}`;
+});
 
 /**
  * Create a new winston logger.
@@ -26,20 +34,34 @@ const logger = winston.createLogger({
     format.label({ label: path.basename(process.mainModule.filename) }),
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     // Format the metadata object
-    format.metadata({ fillExcept: ['message', 'level', 'timestamp', 'label'] })
+    format.metadata({ fillExcept: ['message', 'level', 'timestamp', 'label'] }),
+    logFormat
   ),
   transports: setupTransports(),
 });
 
 /**
+ * Creates a child logger with namespace for logging.
+ *
+ * @param {String} namespace
+ *
+ * @returns {Object}
+ */
+logger.withNamespace = function (namespace) {
+  return logger.child({ namespace });
+};
+
+/**
  * Setup transports for winston.
+ *
+ * @returns {Array}
  */
 function setupTransports() {
   const transports = [];
-  
+
   transports.push(
     new winston.transports.Console({
-      format: format.combine(format.colorize(), logFormat),
+      format: format.combine(format.colorize()),
       level: 'info',
     })
   );

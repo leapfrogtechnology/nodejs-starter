@@ -1,10 +1,11 @@
-import HttpStatus from 'http-status-codes';
-
 import TokenError from '../errors/token';
 
+import logger from '../utils/logger';
 import { http } from '../utils/http';
 
 import { userSession } from './session';
+
+const log = logger.withNamespace('AUTH');
 
 /**
  * Get token from header in http request.
@@ -23,7 +24,7 @@ function getTokenFromHeaders(req) {
       ok: false,
     };
   }
-  
+
   return {
     token: fields[1],
   };
@@ -44,7 +45,7 @@ async function fetchUserByToken(token) {
       clientId: process.env.AUTH_CLIENT_ID,
     },
   });
-  
+
   return data;
 }
 
@@ -59,11 +60,9 @@ function authenticateUser(req, res, next) {
   userSession.run(async () => {
     try {
       const { ok, token } = getTokenFromHeaders(req);
-      
+
       if (!ok) {
-        throw new TokenError({
-          code: HttpStatus.UNAUTHORIZED,
-        });
+        throw new TokenError('Invalid token');
       }
       const user = await fetchUserByToken(token);
 
@@ -73,6 +72,7 @@ function authenticateUser(req, res, next) {
       });
       next();
     } catch (err) {
+      log.error(err);
       next(err);
     }
   });
