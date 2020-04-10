@@ -12,21 +12,17 @@ class NetworkError extends BaseError {
    * @param {Object} error
    * @param {String} error.title
    * @param {String} error.message
-   * @param {Number} error.code
    *
    * @returns {NetworkError}
    */
-  constructor({ title = TITLE, message = '', code = 500 }) {
+  constructor({ title = TITLE, message = '' }) {
     super(message);
     this.title = title;
     this.message = message;
-    this.statusCode = code;
   }
 
   /**
    * Returns the formatted string representation of error.
-   *
-   * @method NetworkError#toString
    *
    * @returns {String}
    */

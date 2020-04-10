@@ -14,6 +14,7 @@ import * as userService from '../services/user';
 export async function fetchAll(req, res, next) {
   try {
     const data = await userService.fetchAll();
+    
     res.json({ data });
   } catch (err) {
     logger.error(err);

@@ -8,13 +8,15 @@ import 'winston-daily-rotate-file';
 const LOG_DIR = process.env.LOG_DIR || 'logs';
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 
+const isFileLogEnabled = process.env.ENABLE_FILE_LOG === 'TRUE';
+
 // Create log directory if it does not exist
 if (!fs.existsSync(LOG_DIR)) {
   fs.mkdirSync(LOG_DIR);
 }
 
 // logFormat used for console logging
-const logFormat = format.printf(info => `${info.timestamp} ${info.level} [${info.label}]: ${info.message}`);
+const logFormat = format.printf((info) => `${info.timestamp} ${info.level} [${info.label}]: ${info.message}`);
 
 /**
  * Create a new winston logger.
@@ -26,24 +28,36 @@ const logger = winston.createLogger({
     // Format the metadata object
     format.metadata({ fillExcept: ['message', 'level', 'timestamp', 'label'] })
   ),
-  transports: [
-    new winston.transports.Console({
-      format: format.combine(
-        format.colorize(),
-        logFormat,
-      ),
-      level: "info",
-    }),
-    new winston.transports.DailyRotateFile({
-      format: format.combine(format.timestamp(), format.json()),
-      maxFiles: '14d',
-      level: LOG_LEVEL,
-      dirname: LOG_DIR,
-      datePattern: 'YYYY-MM-DD',
-      filename: '%DATE%-debug.log',
-    }),
-  ],
+  transports: setupTransports(),
 });
+
+/**
+ * Setup transports for winston.
+ */
+function setupTransports() {
+  const transports = [];
+  
+  transports.push(
+    new winston.transports.Console({
+      format: format.combine(format.colorize(), logFormat),
+      level: 'info',
+    })
+  );
+  if (isFileLogEnabled) {
+    transports.push(
+      new winston.transports.DailyRotateFile({
+        format: format.combine(format.timestamp(), format.json()),
+        maxFiles: '14d',
+        level: LOG_LEVEL,
+        dirname: LOG_DIR,
+        datePattern: 'YYYY-MM-DD',
+        filename: '%DATE%-debug.log',
+      })
+    );
+  }
+
+  return transports;
+}
 
 export const logStream = {
   /**

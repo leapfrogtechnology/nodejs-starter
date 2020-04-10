@@ -64,5 +64,6 @@ export function bodyParser(err, req, res, next) {
  */
 export function genericErrorHandler(err, req, res, next) {
   const error = buildError(err);
+  
   res.status(error.code).json({ error });
 }

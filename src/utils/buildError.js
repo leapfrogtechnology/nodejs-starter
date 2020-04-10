@@ -34,7 +34,7 @@ function buildError(err) {
   // Custom errors
   if (err.isCustom) {
     return {
-      code: err.statusCode,
+      code: err.httpCode(),
       message: err.message,
     };
   }

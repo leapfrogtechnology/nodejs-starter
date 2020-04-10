@@ -1,9 +1,6 @@
 import BaseError from './error';
 
 /**
- * @class DatabaseError
- * @extends BaseError
- *
  * Error class for database failure and error.
  */
 class DatabaseError extends BaseError {
@@ -13,19 +10,15 @@ class DatabaseError extends BaseError {
    * @param {Object} error
    * @param {String} error.title
    * @param {String} error.message
-   * @param {Number} error.code
    */
-  constructor({ title = '', message = '', code = 500 }) {
+  constructor({ title = '', message = '' }) {
     super(message);
     this.title = title;
     this.message = message;
-    this.statusCode = code;
   }
 
   /**
    * Returns the formatted string representation of error.
-   *
-   * @method DatabaseError#toString
    *
    * @returns {String}
    */

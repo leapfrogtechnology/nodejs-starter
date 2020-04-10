@@ -1,51 +1,51 @@
 import HttpStatus from 'http-status-codes';
 
 import TokenError from '../errors/token';
-import NetworkError from '../errors/network';
 
 import { http } from '../utils/http';
-import logger from '../utils/logger';
 
 import { userSession } from './session';
 
-const INTERNAL_ERROR = 'Internal Error';
-
 /**
- * Get token from header in request.
+ * Get token from header in http request.
  *
  * @param {Object} req
  */
-const getTokenFromHeaders = (req) => {
+function getTokenFromHeaders(req) {
   const {
-    headers: { authorization },
+    headers: { authorization = '' },
   } = req;
 
-  if (authorization && authorization.split(' ')[0] === 'Bearer') {
-    if (authorization.split(' ')[1] !== undefined) {
-      return authorization.split(' ')[1];
-    }
-  }
+  const fields = authorization.split(' ').filter(Boolean);
 
-  throw new TokenError({
-    code: HttpStatus.UNAUTHORIZED,
-  });
-};
+  if (fields.length <= 1 || fields[0] !== 'Bearer') {
+    return {
+      ok: false,
+    };
+  }
+  
+  return {
+    token: fields[1],
+  };
+}
 
 /**
- * Fetch users from auth server from token.
+ * Fetch user from auth server from token.
  *
  * @param {String} token
  * @throws NetworkError
+ *
+ * @returns {Promise}
  */
-export function fetchUserByToken(token) {
-  return http
-    .get(`${process.env.AUTH_URL}/userinfo`, {
-      headers: {
-        accessToken: token,
-        clientId: process.env.AUTH_CLIENT_ID,
-      },
-    })
-    .then((response) => response.data);
+async function fetchUserByToken(token) {
+  const { data } = await http.get(`${process.env.AUTH_URL}/userinfo`, {
+    headers: {
+      accessToken: token,
+      clientId: process.env.AUTH_CLIENT_ID,
+    },
+  });
+  
+  return data;
 }
 
 /**
@@ -58,8 +58,13 @@ export function fetchUserByToken(token) {
 function authenticateUser(req, res, next) {
   userSession.run(async () => {
     try {
-      const token = getTokenFromHeaders(req);
-
+      const { ok, token } = getTokenFromHeaders(req);
+      
+      if (!ok) {
+        throw new TokenError({
+          code: HttpStatus.UNAUTHORIZED,
+        });
+      }
       const user = await fetchUserByToken(token);
 
       userSession.set('user', {
@@ -68,15 +73,6 @@ function authenticateUser(req, res, next) {
       });
       next();
     } catch (err) {
-      logger.error(err);
-      if (err instanceof NetworkError) {
-        return next(
-          new NetworkError({
-            message: INTERNAL_ERROR,
-            code: HttpStatus.INTERNAL_SERVER_ERROR,
-          })
-        );
-      }
       next(err);
     }
   });
