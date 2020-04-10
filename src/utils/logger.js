@@ -28,9 +28,9 @@ const logFormat = format.printf((info) => {
   // TODO: Will there be a situation when requestID would be empty string?
   // May logs before middleware initialization?
   const requestID = store.getShortId();
-  const formattedReqID = requestID ? `[${requestID}] ` : '';
+  const formattedReqID = requestID ? `[${requestID}]` : '';
 
-  return `${info.timestamp} [${info.level}] [${info.label}] ${formattedReqID}${formattedNamespace}: ${info.message}`;
+  return `${info.timestamp} [${info.level}] [${info.label}] ${formattedReqID} ${formattedNamespace}: ${info.message}`;
 });
 
 /**
