@@ -10,7 +10,7 @@ import 'winston-daily-rotate-file';
 const LOG_DIR = process.env.LOG_DIR || 'logs';
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 
-const isFileLogEnabled = process.env.ENABLE_FILE_LOG === 'TRUE';
+const isFileLogTransportEnabled = process.env.ENABLE_FILE_LOG_TRANSPORT === 'TRUE';
 
 // Create log directory if it does not exist
 if (!fs.existsSync(LOG_DIR)) {
@@ -72,7 +72,7 @@ function setupTransports() {
       level: 'info',
     })
   );
-  if (isFileLogEnabled) {
+  if (isFileLogTransportEnabled) {
     transports.push(
       new winston.transports.DailyRotateFile({
         format: format.combine(format.timestamp(), format.json()),
