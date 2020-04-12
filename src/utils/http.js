@@ -9,7 +9,7 @@ import NetworkError from '../errors/network';
 const http = axios.create();
 
 http.interceptors.request.use(
-  (config) => {
+  config => {
     return config;
   },
   function (error) {

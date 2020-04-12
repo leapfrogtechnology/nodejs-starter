@@ -24,7 +24,7 @@ class Model {
    * @returns {Promise}
    */
   save(payload = {}) {
-    return db.transaction((trx) => {
+    return db.transaction(trx => {
       return db(this.getTable()).transacting(trx).insert(payload);
     });
   }

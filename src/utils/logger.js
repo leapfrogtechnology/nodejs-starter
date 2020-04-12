@@ -18,7 +18,7 @@ if (!fs.existsSync(LOG_DIR)) {
 }
 
 // logFormat used for console logging
-const logFormat = format.printf((info) => {
+const logFormat = format.printf(info => {
   let formattedNamespace = '';
 
   if (info.metadata.namespace) {

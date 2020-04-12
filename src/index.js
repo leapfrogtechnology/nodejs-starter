@@ -78,7 +78,7 @@ app.listen(app.get('port'), app.get('host'), () => {
 });
 
 // Catch unhandled rejections
-process.on('unhandledRejection', (err) => {
+process.on('unhandledRejection', err => {
   logger.error('Unhandled rejection', err);
 
   try {
@@ -91,7 +91,7 @@ process.on('unhandledRejection', (err) => {
 });
 
 // Catch uncaught exceptions
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   logger.error('Uncaught exception', err);
 
   try {
