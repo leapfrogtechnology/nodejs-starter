@@ -1,6 +1,8 @@
 import HttpStatus from 'http-status-codes';
 import * as store from '@leapfrogtechnology/async-store';
 
+import TokenError from '../errors/token';
+
 /**
  * Build error response for validation errors.
  *
@@ -38,10 +40,18 @@ function buildError(err) {
 
   // Custom errors
   if (err.isCustom) {
+    if (err instanceof TokenError) {
+      return {
+        id: requestID,
+        code: HttpStatus.UNAUTHORIZED,
+        message: HttpStatus.getStatusText(HttpStatus.UNAUTHORIZED),
+      };
+    }
+
     return {
       id: requestID,
-      code: err.httpCode(),
-      message: err.message,
+      code: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: err.message || HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
     };
   }
 

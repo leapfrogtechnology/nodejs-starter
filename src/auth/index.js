@@ -4,16 +4,13 @@ import { http } from '../utils/http';
 import TokenError from '../errors/token';
 
 /**
- * Get token from header in http request.
+ * Extract token from headers in http request.
  *
- * @param   {Object} req
- *
+ * @param {Object} headers
  * @returns {Object}
  */
-function getTokenFromHeaders(req) {
-  const {
-    headers: { authorization = '' },
-  } = req;
+function extractTokenFromHeaders(headers = {}) {
+  const { authorization = '' } = headers;
 
   const [tokenType, token] = authorization.split(' ').filter(Boolean);
 
@@ -32,8 +29,7 @@ function getTokenFromHeaders(req) {
  * Fetch user from auth server using token.
  *
  * @param {String} token
- * @throws NetworkError
- *
+ * @throws {NetworkError}
  * @returns {Promise}
  */
 async function fetchUserByToken(token) {
@@ -56,7 +52,7 @@ async function fetchUserByToken(token) {
  */
 async function authenticateUser(req, res, next) {
   try {
-    const { ok, token } = getTokenFromHeaders(req);
+    const { ok, token } = extractTokenFromHeaders(req.headers);
 
     if (!ok) {
       throw new TokenError('Invalid token');

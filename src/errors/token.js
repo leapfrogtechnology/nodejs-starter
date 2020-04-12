@@ -1,5 +1,3 @@
-import HttpStatus from 'http-status-codes';
-
 import BaseError from './error';
 
 /**
@@ -13,15 +11,6 @@ class TokenError extends BaseError {
    */
   toString() {
     return `Token Error: ${this.message}`;
-  }
-
-  /**
-   * Returns http status code for invalid token.
-   *
-   * @returns {Number}
-   */
-  httpCode() {
-    return HttpStatus.UNAUTHORIZED;
   }
 }
 

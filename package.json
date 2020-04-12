@@ -42,6 +42,7 @@
     "api"
   ],
   "private": true,
+  "author": "Saugat Acharya <mesaugat@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@hapi/boom": "^9.1.0",
