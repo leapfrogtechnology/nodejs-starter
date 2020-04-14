@@ -5,6 +5,17 @@ import BaseError from './error';
  */
 class DatabaseError extends BaseError {
   /**
+   * Constructor for DatabaseError.
+   *
+   * @param {String} message
+   * @returns {DatabaseError}
+   */
+  constructor(message) {
+    super(message);
+    this.name = 'DatabaseError';
+  }
+
+  /**
    * Returns the formatted string representation of error.
    *
    * @returns {String}

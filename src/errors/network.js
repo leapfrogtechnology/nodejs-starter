@@ -5,6 +5,17 @@ import BaseError from './error';
  */
 class NetworkError extends BaseError {
   /**
+   * Constructor for NetworkError.
+   *
+   * @param {String} message
+   * @returns {NetworkError}
+   */
+  constructor(message) {
+    super(message);
+    this.name = 'NetworkError';
+  }
+
+  /**
    * Returns the formatted string representation of error.
    *
    * @returns {String}

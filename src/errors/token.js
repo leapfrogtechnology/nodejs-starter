@@ -5,6 +5,17 @@ import BaseError from './error';
  */
 class TokenError extends BaseError {
   /**
+   * Constructor for TokenError.
+   *
+   * @param {String} message
+   * @returns {TokenError}
+   */
+  constructor(message) {
+    super(message);
+    this.name = 'TokenError';
+  }
+
+  /**
    * Returns the formatted string representation of error.
    *
    * @returns {String}

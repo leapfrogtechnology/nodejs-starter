@@ -31,14 +31,14 @@ class Model {
   /**
    * This method fetches rows from database provided offset and limit.
    *
-   * @param {Object} param0
+   * @param {Object} params
    * @returns {Promise}
    */
-  fetch({ offset, limit }) {
+  fetch(params) {
     // Clamp the limit of the pagination to 100 exclusive
-    limit = clamp(limit, 0, 100);
+    const limit = clamp(params.limit, 0, 100);
     // Only positive offset allowed
-    offset = Math.max(0, offset);
+    const offset = Math.max(0, params.offset);
 
     return db(this.getTable()).limit(limit).offset(offset);
   }

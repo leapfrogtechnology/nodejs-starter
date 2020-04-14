@@ -2,7 +2,6 @@ import * as store from '@leapfrogtechnology/async-store';
 
 import { http } from '../utils/http';
 import TokenError from '../errors/token';
-import logger from '../utils/logger';
 
 /**
  * Extract token from headers in http request.
@@ -64,7 +63,6 @@ async function authenticateUser(req, res, next) {
     store.set(user);
     next();
   } catch (err) {
-    logger.error(err);
     next(err);
   }
 }

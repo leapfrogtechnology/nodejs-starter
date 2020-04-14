@@ -19,18 +19,14 @@ if (!fs.existsSync(LOG_DIR)) {
 
 // logFormat used for console logging
 const logFormat = format.printf(info => {
-  let formattedNamespace = '';
-
-  if (info.metadata.namespace) {
-    formattedNamespace = `[${info.metadata.namespace}]`;
-  }
+  const formattedNamespace = info.metadata.namespace ? info.metadata.namespace : '';
 
   // TODO: Will there be a situation when requestID would be empty string?
   // May logs before middleware initialization?
   const requestID = store.getShortId();
-  const formattedReqID = requestID ? `[${requestID}]` : '';
+  const formattedReqID = requestID ? requestID : '';
 
-  return `${info.timestamp} [${info.level}] [${info.label}] ${formattedReqID} ${formattedNamespace}: ${info.message}`;
+  return `${info.timestamp} [${info.level}] [${info.label}] [${formattedReqID}] [${formattedNamespace}]: ${info.message}`;
 });
 
 /**
@@ -75,7 +71,7 @@ function setupTransports() {
     transports.push(
       new winston.transports.DailyRotateFile({
         format: format.combine(format.timestamp(), format.json()),
-        maxFiles: '14d',
+        maxFiles: process.env.LOG_RETENTION_PERIOD || '14d',
         level: LOG_LEVEL,
         dirname: LOG_DIR,
         datePattern: 'YYYY-MM-DD',
