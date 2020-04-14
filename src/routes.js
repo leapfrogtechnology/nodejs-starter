@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import authenticateUser from './auth';
+// import authenticateUser from './auth';
 import userRoutes from './routes/user';
 import swaggerSpec from './utils/swagger';
 
@@ -34,7 +34,7 @@ const privateRouter = Router();
 /**
  * Authentication middleware for private routes.
  */
-privateRouter.use(authenticateUser);
+// privateRouter.use(authenticateUser);
 
 privateRouter.use('/users', userRoutes);
 
