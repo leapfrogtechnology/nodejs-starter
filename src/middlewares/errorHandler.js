@@ -63,7 +63,6 @@ export function bodyParser(err, req, res, next) {
  * @param  {Function} next
  */
 export function genericErrorHandler(err, req, res, next) {
-  logger.error(err.stack);
   const error = buildError(err);
 
   res.status(error.code).json({ error });

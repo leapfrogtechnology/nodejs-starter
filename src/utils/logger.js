@@ -51,7 +51,6 @@ const logger = winston.createLogger({
  * Creates a child logger with namespace for logging.
  *
  * @param {String} namespace
- *
  * @returns {Object}
  */
 logger.withNamespace = function (namespace) {

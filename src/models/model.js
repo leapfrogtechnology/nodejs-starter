@@ -3,7 +3,7 @@ import db from '../db';
 import { clamp } from '../utils/math';
 
 /**
- * Base class that is extended by domain models such as users, leave, etc.
+ * Base class that is extended by domain models.
  */
 class Model {
   /**
@@ -19,8 +19,7 @@ class Model {
    * This method persists the payload object to underlying database.
    * NOTE: Rollback triggers with rejected promise.
    *
-   * @param   {Object} payload
-   *
+   * @param {Object} payload
    * @returns {Promise}
    */
   save(payload = {}) {
@@ -32,8 +31,7 @@ class Model {
   /**
    * This method fetches rows from database provided offset and limit.
    *
-   * @param   {Object} param0
-   *
+   * @param {Object} param0
    * @returns {Promise}
    */
   fetch({ offset, limit }) {

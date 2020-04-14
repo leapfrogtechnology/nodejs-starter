@@ -1,37 +1,41 @@
 import { Router } from 'express';
 
 import authenticateUser from './auth';
-
-import swaggerSpec from './utils/swagger';
 import userRoutes from './routes/user';
+import swaggerSpec from './utils/swagger';
 
 /**
- * Contains all API routes for the application.
+ * Contains public API routes for the application.
  */
-const router = Router();
+const publicRouter = Router();
 
 /**
  * GET /api/swagger.json
  */
-router.get('/swagger.json', (req, res) => {
+publicRouter.get('/swagger.json', (_, res) => {
   res.json(swaggerSpec);
 });
 
 /**
- * LMS Authentication middleware
- */
-router.use(authenticateUser);
-
-/**
  * GET /api
  */
-router.get('/', (req, res) => {
+publicRouter.get('/', (req, res) => {
   res.json({
     app: req.app.locals.title,
     apiVersion: req.app.locals.version,
   });
 });
 
-router.use('/users', userRoutes);
+/**
+ * Contains secured API routes for the application.
+ */
+const privateRouter = Router();
 
-export default router;
+/**
+ * Authentication middleware for private routes.
+ */
+privateRouter.use(authenticateUser);
+
+privateRouter.use('/users', userRoutes);
+
+export { publicRouter, privateRouter };
