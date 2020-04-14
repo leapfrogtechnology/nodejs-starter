@@ -11,10 +11,11 @@ import favicon from 'serve-favicon';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import * as Sentry from '@sentry/node';
+import * as store from '@leapfrogtechnology/async-store';
 
-import routes from './routes';
 import json from './middlewares/json';
 import logger, { logStream } from './utils/logger';
+import { publicRouter, privateRouter } from './routes';
 import * as errorHandler from './middlewares/errorHandler';
 
 // Initialize Sentry
@@ -38,6 +39,9 @@ app.locals.version = process.env.APP_VERSION;
 // This request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
 
+// For context propagation of request-response http roundtrip
+app.use(store.initializeMiddleware());
+
 app.use(favicon(path.join(__dirname, '/../public', 'favicon.ico')));
 app.use(cors());
 app.use(helmet());
@@ -48,7 +52,8 @@ app.use(errorHandler.bodyParser);
 app.use(json);
 
 // API Routes
-app.use('/api', routes);
+app.use('/api', publicRouter);
+app.use('/api', privateRouter);
 
 // Swagger UI
 // Workaround for changing the default URL in swagger.json
@@ -58,8 +63,8 @@ const swaggerIndexContent = fs
   .toString()
   .replace('https://petstore.swagger.io/v2/swagger.json', '/api/swagger.json');
 
-app.get('/api-docs/index.html', (req, res) => res.send(swaggerIndexContent));
-app.get('/api-docs', (req, res) => res.redirect('/api-docs/index.html'));
+app.get('/api-docs/index.html', (_, res) => res.send(swaggerIndexContent));
+app.get('/api-docs', (_, res) => res.redirect('/api-docs/index.html'));
 app.use('/api-docs', express.static(pathToSwaggerUi));
 
 // This error handler must be before any other error middleware

@@ -16,9 +16,7 @@ describe('Base API Test', () => {
   });
 
   it('should return 405 method not allowed for random API hits', done => {
-    const randomString = Math.random()
-      .toString(36)
-      .substr(2, 5);
+    const randomString = Math.random().toString(36).substr(2, 5);
 
     request(app)
       .get(`/api/${randomString}`)

@@ -1,24 +1,17 @@
-import bookshelf from '../db';
-
-const TABLE_NAME = 'users';
+import Model from './model';
 
 /**
- * User model.
+ * User model representing user entity.
  */
-class User extends bookshelf.Model {
+class User extends Model {
   /**
-   * Get table name.
+   * Returns table name associated with User model.
+   *
+   * @returns {String}
    */
-  get tableName() {
-    return TABLE_NAME;
-  }
-
-  /**
-   * Table has timestamps.
-   */
-  get hasTimestamps() {
-    return true;
+  getTable() {
+    return 'users';
   }
 }
 
-export default User;
+export default new User();

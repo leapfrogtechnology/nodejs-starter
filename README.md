@@ -37,27 +37,6 @@ Example,
     $ yarn make:migration create_tags_table
     $ yarn make:seeder 02_insert_tags
 
-## Using Docker
-
-### Using docker-compose
-
-Use [docker-compose](https://docs.docker.com/compose/) to quickly bring up a stack with pre-configured Postgres database container. Data is ephemeral and containers will disappear when stack is removed.
-
-Specific configuration for Docker is in `.env.docker`
-
-- `0.0.0.0` as `$APP_HOST` to expose app on Docker network interface
-- Pre-configured Postgres settings - can be updated to point to another Postgres host
-
-Bring up stack,
-
-    $ docker-compose up
-
-Navigate to http://localhost:8848/api-docs/ to verify application is running from docker.
-
-Bring down stack,
-
-    $ docker-compose down
-
 ### Multi-stage docker builds
 
 There are multiple build targets available for different stages. These images can be used to deploy or run jobs in different container based cloud infrastructure like Kubernetes, AWS ECS, Fargate, GCP Cloud Run etc.
@@ -100,4 +79,3 @@ To run the tests you need to create a separate test database. Don't forget to up
 Run tests with coverage.
 
     $ yarn test:coverage
-

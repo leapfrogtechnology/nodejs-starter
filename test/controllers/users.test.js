@@ -28,7 +28,7 @@ describe('Users Controller Test', () => {
 
   it('should not create a new user if name is not provided', done => {
     const user = {
-      noname: 'Jane Doe'
+      noname: 'Jane Doe',
     };
 
     request(app)
@@ -50,7 +50,7 @@ describe('Users Controller Test', () => {
 
   it('should create a new user with valid data', done => {
     const user = {
-      name: 'Jane Doe'
+      name: 'Jane Doe',
     };
 
     request(app)
@@ -104,7 +104,7 @@ describe('Users Controller Test', () => {
 
   it('should update a user if name is provided', done => {
     const user = {
-      name: 'John Doe'
+      name: 'John Doe',
     };
 
     request(app)
@@ -126,7 +126,7 @@ describe('Users Controller Test', () => {
 
   it('should not update a user if name is not provided', done => {
     const user = {
-      noname: 'John Doe'
+      noname: 'John Doe',
     };
 
     request(app)
