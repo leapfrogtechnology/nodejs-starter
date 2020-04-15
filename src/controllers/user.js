@@ -9,9 +9,9 @@ import * as userService from '../services/user';
  * @param {Object} res
  * @param {Function} next
  */
-export async function fetch(req, res, next) {
+export async function findAll(req, res, next) {
   try {
-    const data = await userService.fetch();
+    const data = await userService.findAll();
 
     res.json({ data });
   } catch (err) {
@@ -28,7 +28,7 @@ export async function fetch(req, res, next) {
  */
 export async function create(req, res, next) {
   try {
-    const data = await userService.create();
+    const data = await userService.create(req.body);
 
     res.status(HttpStatus.CREATED).json({ data });
   } catch (err) {

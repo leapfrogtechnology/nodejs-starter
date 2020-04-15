@@ -4,14 +4,7 @@ import Model from './model';
  * User model representing user entity.
  */
 class User extends Model {
-  /**
-   * Returns table name associated with User model.
-   *
-   * @returns {String}
-   */
-  getTable() {
-    return 'users';
-  }
+  static table = 'users';
 }
 
-export default new User();
+export default User;
